@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SIM Card Registration Form</title>
+    <style>
+        body {
+            font-family: Arial;
+            padding: 20px;
+        }
+        input, select {
+            margin: 5px 0;
+            padding: 5px;
+        }
+        button {
+            padding: 8px 15px;
+            margin-top: 10px;
+        }
+        .error {
+            color: red;
+            font-weight: bold;
+        }
+        .success {
+            color: green;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<h2>SIM Card Registration Form</h2>
+
+<form>
+    Full Name:<br>
+    <input type="text" id="name"><br>
+
+    Citizenship Number:<br>
+    <input type="text" id="citizenship"><br>
+
+    SIM Type:<br>
+    <input type="radio" name="simtype" value="Prepaid"> Prepaid
+    <input type="radio" name="simtype" value="Postpaid"> Postpaid<br><br>
+
+    Date of Birth:<br>
+    <input type="date" id="dob"><br>
+
+    Nationality:<br>
+    <select id="nationality">
+        <option value="">--Select--</option>
+        <option value="Nepali">Nepali</option>
+        <option value="Indian">Indian</option>
+        <option value="Other">Other</option>
+    </select><br><br>
+
+    <input type="checkbox" id="terms"> I Accept Terms & Conditions<br><br>
+
+    <button type="button" onclick="validateForm()">Register</button>
+</form>
+
+<div id="message"></div>
+
+<script>
+function validateForm() {
+
+    let name = document.getElementById("name").value.trim();
+    let citizenship = document.getElementById("citizenship").value.trim();
+    let dob = document.getElementById("dob").value;
+    let nationality = document.getElementById("nationality").value;
+    let terms = document.getElementById("terms").checked;
+    let simtype = document.querySelector('input[name="simtype"]:checked');
+    let message = document.getElementById("message");
+    let namePattern = /^[A-Za-z\s]+$/;
+    if (!namePattern.test(name)) {
+        message.innerHTML = "<span class='error'>Name must contain only letters.</span>";
+        return;
+    }
+    if (citizenship.length < 10) {
+        message.innerHTML = "<span class='error'>Citizenship number must be at least 10 characters.</span>";
+        return;
+    }
+    if (dob === "") {
+        message.innerHTML = "<span class='error'>Date of Birth is required.</span>";
+        return;
+    }
+
+    let today = new Date();
+    let birthDate = new Date(dob);
+    let age = today.getFullYear() - birthDate.getFullYear();
+    let monthDiff = today.getMonth() - birthDate.getMonth();
+
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+        age--;
+    }
+
+    if (age < 18) {
+        message.innerHTML = "<span class='error'>You must be 18 or above to register.</span>";
+        return;
+    }
+    if (!simtype) {
+        message.innerHTML = "<span class='error'>Please select a SIM type.</span>";
+        return;
+    }
+
+    if (!terms) {
+        message.innerHTML = "<span class='error'>You must accept Terms & Conditions.</span>";
+        return;
+    }
+    if (nationality === "") {
+        message.innerHTML = "<span class='error'>Please select nationality.</span>";
+        return;
+    }
+    message.innerHTML = "<span class='success'>Registration Successful! SIM Card Activated.</span>";
+}
+</script>
+
+</body>
+</html>

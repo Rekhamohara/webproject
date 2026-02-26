@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Entrance Examination Registration</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+        }
+        .container {
+            width: 400px;
+            margin: 50px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px gray;
+        }
+        h2 {
+            text-align: center;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin: 6px 0 12px 0;
+        }
+        .gender-group {
+            margin-bottom: 12px;
+        }
+        .error {
+            color: red;
+            font-size: 14px;
+        }
+        .success {
+            color: green;
+            text-align: center;
+            font-weight: bold;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background: blue;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background: darkblue;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Entrance Exam Registration</h2>
+    <form id="examForm">
+        
+        <label>Full Name:</label>
+        <input type="text" id="name">
+
+        <label>Date of Birth:</label>
+        <input type="date" id="dob">
+
+        <label>Age:</label>
+        <input type="number" id="age">
+
+        <label>Phone Number:</label>
+        <input type="text" id="phone">
+
+        <label>Email Address:</label>
+        <input type="text" id="email">
+
+        <label>Gender:</label>
+        <div class="gender-group">
+            <input type="radio" name="gender" value="Male"> Male
+            <input type="radio" name="gender" value="Female"> Female
+        </div>
+
+        <label>Exam Stream:</label>
+        <select id="stream">
+            <option value=""> Select Stream</option>
+            <option value="BBA">BBA</option>
+            <option value="BCA">BCA</option>
+        </select>
+
+        <div>
+            <input type="checkbox" id="agree">
+            I confirm all details are correct
+        </div>
+
+        <div class="error" id="error"></div>
+        <div class="success" id="success"></div>
+
+        <button type="submit">Register</button>
+    </form>
+</div>
+
+<script>
+document.getElementById("examForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    let name = document.getElementById("name").value.trim();
+    let dob = document.getElementById("dob").value;
+    let age = document.getElementById("age").value;
+    let phone = document.getElementById("phone").value.trim();
+    let email = document.getElementById("email").value.trim();
+    let stream = document.getElementById("stream").value;
+    let agree = document.getElementById("agree").checked;
+    let gender = document.querySelector('input[name="gender"]:checked');
+
+    let error = document.getElementById("error");
+    let success = document.getElementById("success");
+
+    error.innerHTML = "";
+    success.innerHTML = "";
+    if (!name || !dob || !age || !phone || !email || !gender || !stream || !agree) {
+        error.innerHTML = "All fields are required!";
+        return;
+    }
+    let namePattern = /^[A-Za-z\s]+$/;
+    if (!namePattern.test(name)) {
+        error.innerHTML = "Name must contain only letters.";
+        return;
+    }
+    if (age < 16 || age > 30) {
+        error.innerHTML = "Age must be between 16 and 30.";
+        return;
+    }
+    let phonePattern = /^(98|97)\d{8}$/;
+    if (!phonePattern.test(phone)) {
+        error.innerHTML = "Phone number must be 10 digits and start with 98 or 97.";
+        return;
+    }
+    let emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailPattern.test(email)) {
+        error.innerHTML = "Enter a valid email address.";
+        return;
+    }
+    success.innerHTML = "Registration Successful!";
+    
+    setTimeout(function() {
+        location.reload();
+    }, 5000);
+});
+</script>
+
+</body>
+</html>

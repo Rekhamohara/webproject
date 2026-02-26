@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Mark Sheet Generator</title>
+    <style>
+        body {
+            font-family: Arial;
+            padding: 20px;
+        }
+        input {
+            margin: 5px 0;
+            padding: 5px;
+        }
+        button {
+            padding: 8px 15px;
+            margin-top: 10px;
+        }
+        .result {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Student Mark Sheet Generator</h2>
+
+<form id="marksForm">
+    Student Name:<br>
+    <input type="text" id="name"><br>
+
+    Roll Number:<br>
+    <input type="number" id="roll"><br>
+
+    Marks in English (0-100):<br>
+    <input type="number" id="english"><br>
+
+    Marks in Math (0-100):<br>
+    <input type="number" id="math"><br>
+
+    Marks in Science (0-100):<br>
+    <input type="number" id="science"><br>
+
+    <button type="button" onclick="generateMarksheet()">Generate Mark Sheet</button>
+</form>
+
+<div class="result" id="output"></div>
+
+<script>
+function generateMarksheet() {
+    let name = document.getElementById("name").value.trim();
+    let roll = document.getElementById("roll").value.trim();
+    let english = document.getElementById("english").value.trim();
+    let math = document.getElementById("math").value.trim();
+    let science = document.getElementById("science").value.trim();
+    let output = document.getElementById("output");
+    if (name === "" || roll === "" || english === "" || math === "" || science === "") {
+        output.innerHTML = "<span class='error'>All fields are required!</span>";
+        return;
+    }
+
+    english = Number(english);
+    math = Number(math);
+    science = Number(science);
+    if (english < 0 || english > 100 ||
+        math < 0 || math > 100 ||
+        science < 0 || science > 100) {
+        output.innerHTML = "<span class='error'>Marks must be between 0 and 100!</span>";
+        return;
+    }
+    let total = english + math + science;
+    let percentage = (total / 300) * 100;
+    output.innerHTML = `
+        <h3>Mark Sheet</h3>
+        Name: ${name} <br>
+        Roll No: ${roll} <br>
+        Total Marks: ${total} / 300 <br>
+        Percentage: ${percentage.toFixed(2)}%
+    `;
+    let result = (english >= 40 && math >= 40 && science >= 40)?"pass":"fail";
+    let grade;
+    if (percentage >= 80) {
+        grade = "A";
+    } else if (percentage >= 60) {
+        grade = "B";
+    } else if (percentage >= 40) {
+        grade = "C";
+    } else {
+        grade = "Fail";
+    }
+    output.innerHTML = `
+        <h3>Mark Sheet</h3>
+        Name: ${name} <br>
+        Roll No: ${roll} <br>
+        Total Marks: ${total} / 300 <br>
+        Percentage: ${percentage.toFixed(2)}% <br>
+        Result: ${result} <br>
+        Grade: ${grade}
+    `;
+}
+</script>
+
+</body>
+</html>
